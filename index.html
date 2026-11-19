@@ -1,138 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mini FPS Prototype</title>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { display: block; }
-    #instructions {
-      position: absolute; top: 50%; width: 100%; text-align: center;
-      font-size: 24px; color: white; font-family: sans-serif;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name | Gamedev</title>
+<meta name="description" content="Game developer building their own engine and games. Check out my work and join my Discord.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#c9b8ff;--ink:#170f3a;--lime:#c6ff3d;--white:#fbf9ff;--pink:#ff7ad9}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 1.08rem/1.6 'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px;width:100%}
+h1,h2,h3{font-family:Unbounded,'Hanken Grotesk',sans-serif;line-height:1.1;letter-spacing:-.03em}
+
+header.top{border-bottom:3px solid var(--ink);background:var(--white)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:14px;padding-bottom:14px;gap:16px;flex-wrap:wrap}
+.logo{font:800 1.2rem Unbounded,sans-serif;text-decoration:none}
+nav{display:flex;gap:6px}
+nav a{text-decoration:none;font-weight:700;padding:8px 16px;border:3px solid transparent;border-radius:999px}
+nav a:hover{border-color:var(--ink)}
+nav a.on{background:var(--lime);border-color:var(--ink)}
+
+main{flex:1}
+.page{display:none;padding:56px 0 80px}
+.page.on{display:block}
+
+.btn{display:inline-block;padding:14px 24px;border:3px solid var(--ink);border-radius:12px;font-weight:700;text-decoration:none;background:var(--white);box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;cursor:pointer;font-family:inherit;font-size:1rem;color:inherit}
+.btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.btn.main{background:var(--lime)}
+
+/* Home */
+.home{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+.home h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:800}
+.home p{margin:24px 0 32px;max-width:46ch;font-size:1.15rem}
+.avatar{aspect-ratio:1;border:3px solid var(--ink);border-radius:50%;background:var(--pink);box-shadow:10px 10px 0 var(--ink);display:grid;place-items:center;overflow:hidden;font:800 7rem Unbounded,sans-serif;max-width:360px;width:100%;justify-self:center}
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+h2.title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin-bottom:32px}
+
+/* Games */
+.featured{background:var(--ink);color:var(--white);border:3px solid var(--ink);border-radius:20px;display:grid;grid-template-columns:1fr 1.1fr;gap:36px;align-items:center;padding:36px;box-shadow:10px 10px 0 var(--pink);margin-bottom:48px}
+.featured h3{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:800}
+.tag{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:.9rem;padding:3px 12px;border-radius:999px;margin-bottom:16px}
+.featured p{margin:16px 0 24px;max-width:40ch;opacity:.92}
+.featured .btn{box-shadow:5px 5px 0 var(--bg)}
+.featured .btn:hover{box-shadow:2px 2px 0 var(--bg)}
+.view{border:3px solid var(--bg);border-radius:12px;overflow:hidden;background:#0d0826}
+.view .bar{display:flex;justify-content:space-between;padding:7px 14px;font-size:.85rem;font-weight:500;border-bottom:3px solid var(--bg)}
+.view .bar b{color:var(--lime)}
+canvas{display:block;width:100%;height:auto;aspect-ratio:4/3}
+.list{border-top:3px solid var(--ink)}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px 24px;align-items:baseline;padding:22px 8px;border-bottom:3px solid var(--ink);text-decoration:none;transition:background .15s,padding .15s}
+.row:hover{background:var(--lime);padding-left:20px}
+.row h3{font-size:1.3rem;font-weight:600}
+.row .meta{font-weight:700;white-space:nowrap}
+.row p{grid-column:1/-1;max-width:58ch}
+
+/* Videos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:28px}
+.vid{text-decoration:none;display:block}
+.thumb{aspect-ratio:16/9;border:3px solid var(--ink);border-radius:14px;background:var(--white);box-shadow:6px 6px 0 var(--ink);display:grid;place-items:center;font-size:2.4rem;transition:transform .12s,box-shadow .12s}
+.vid:hover .thumb{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
+.vid h3{font-size:1.05rem;font-weight:600;margin-top:18px}
+.vid p{font-size:.95rem}
+
+/* Contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.contact a.card{border:3px solid var(--ink);border-radius:16px;padding:28px;background:var(--white);box-shadow:6px 6px 0 var(--ink);text-decoration:none;transition:transform .12s,box-shadow .12s}
+.contact a.card:hover{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
+.contact a.card.hot{background:var(--lime)}
+.contact h3{font-size:1.4rem;font-weight:800;margin-bottom:6px}
+
+footer{background:var(--ink);color:var(--white);padding:22px 0;font-size:.95rem}
+
+@media (max-width:820px){
+  .home,.featured,.contact{grid-template-columns:1fr}
+  .featured{padding:24px;box-shadow:6px 6px 0 var(--pink)}
+  .avatar{max-width:240px;font-size:5rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 </head>
 <body>
-  <div id="instructions">Click to play</div>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/examples/js/controls/PointerLockControls.js"></script>
-  <script>
-    // Scene, camera, renderer
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x20232a);
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({antialias:true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
 
-    // Lighting
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 2, 3);
-    scene.add(light);
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" data-cfg="name">Your Name</a>
+    <nav aria-label="Main">
+      <a href="#home" data-p="home">Home</a>
+      <a href="#games" data-p="games">Games</a>
+      <a href="#videos" data-p="videos">Videos</a>
+      <a href="#contact" data-p="contact">Contact</a>
+    </nav>
+  </div>
+</header>
 
-    // Floor
-    const floorGeometry = new THREE.PlaneGeometry(50, 50);
-    const floorMaterial = new THREE.MeshStandardMaterial({color: 0x808080});
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI/2;
-    scene.add(floor);
+<main>
+  <!-- HOME -->
+  <section class="page" id="home"><div class="wrap home">
+    <div>
+      <h1>I'm <span data-cfg="short">Name</span>.</h1>
+      <p data-cfg="bio">Hey! I'm a game developer building my own engine and the games that run on it. Write a few sentences here about who you are, what you make, and what you're working on right now.</p>
+      <div class="btns">
+        <a class="btn main" href="#games">Explore my games</a>
+      </div>
+    </div>
+    <div class="avatar" id="avatar" aria-hidden="true"></div>
+  </div></section>
 
-    // Simple walls
-    const wallGeometry = new THREE.BoxGeometry(50, 10, 1);
-    const wallMaterial = new THREE.MeshStandardMaterial({color:0x333333});
-    const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
-    backWall.position.set(0,5,-25);
-    scene.add(backWall);
+  <!-- GAMES -->
+  <section class="page" id="games"><div class="wrap">
+    <h2 class="title">Games &amp; engine</h2>
+    <article class="featured">
+      <div>
+        <span class="tag">My engine</span>
+        <h3 data-cfg="engine">YourEngine</h3>
+        <p>A game engine built from scratch. Replace this with what it does and why you made it.</p>
+        <a class="btn main" href="#" data-link="github">View the code</a>
+      </div>
+      <div class="view" role="img" aria-label="Live demo: a spinning wireframe cube rendered in the browser">
+        <div class="bar"><span>engine viewport</span><b id="fps">-- fps</b></div>
+        <canvas id="cv" width="640" height="480"></canvas>
+      </div>
+    </article>
+    <div class="list">
+      <a class="row" href="#" data-link="github"><h3>Game Title One</h3><span class="meta">Game · 2026</span><p>One line on what it is and what you built. Link it to a playable page or repo.</p></a>
+      <a class="row" href="#" data-link="github"><h3>Tool or Script Name</h3><span class="meta">Tool · 2026</span><p>A script, mod, or small utility you made.</p></a>
+      <a class="row" href="#" data-link="github"><h3>Game Jam Entry</h3><span class="meta">Jam · 2025</span><p>Something short and finished.</p></a>
+    </div>
+  </div></section>
 
-    const frontWall = new THREE.Mesh(wallGeometry, wallMaterial);
-    frontWall.position.set(0,5,25);
-    scene.add(frontWall);
+  <!-- VIDEOS -->
+  <section class="page" id="videos"><div class="wrap">
+    <h2 class="title">Videos</h2>
+    <div class="vids">
+      <a class="vid" href="#" data-link="youtube"><div class="thumb">▶</div><h3>Engine devlog #1</h3><p>Link each card to a video. Swap in screenshots if you like.</p></a>
+      <a class="vid" href="#" data-link="youtube"><div class="thumb">▶</div><h3>Gameplay showcase</h3><p>Footage of a game running on your engine.</p></a>
+      <a class="vid" href="#" data-link="youtube"><div class="thumb">▶</div><h3>How I built it</h3><p>A walkthrough of how something works.</p></a>
+    </div>
+  </div></section>
 
-    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(1,10,50), wallMaterial);
-    leftWall.position.set(-25,5,0);
-    scene.add(leftWall);
+  <!-- CONTACT -->
+  <section class="page" id="contact"><div class="wrap">
+    <h2 class="title">Get in touch</h2>
+    <div class="contact">
+      <a class="card hot" href="#" data-link="discord"><h3>Join my Discord</h3><p>Best way to reach me. Try what I'm building and give feedback.</p></a>
+      <a class="card" href="#" data-link="email"><h3>Email</h3><p>For business or longer messages.</p></a>
+      <a class="card" href="#" data-link="github"><h3>GitHub</h3><p>Code, engine source, and projects.</p></a>
+      <a class="card" href="#" data-link="youtube"><h3>YouTube</h3><p>Devlogs and showcases.</p></a>
+    </div>
+  </div></section>
+</main>
 
-    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(1,10,50), wallMaterial);
-    rightWall.position.set(25,5,0);
-    scene.add(rightWall);
+<footer><div class="wrap">© <span data-cfg="name">Your Name</span></div></footer>
 
-    // Player controls
-    const controls = new THREE.PointerLockControls(camera, document.body);
-    const instructions = document.getElementById('instructions');
-    instructions.addEventListener('click', () => controls.lock());
+<script>
+/* ---- EDIT THESE ---- */
+const CONFIG = {
+  name: "Your Name",
+  short: "Name",
+  bio: "Hey! I'm a game developer building my own engine and the games that run on it. Write a few sentences here about who you are, what you make, and what you're working on right now.",
+  engine: "YourEngine",
+  avatar: "",   /* optional: path to an image like "me.png" */
+  discord: "https://discord.gg/your-invite-code",
+  github: "https://github.com/your-username",
+  youtube: "https://youtube.com/@your-channel",
+  email: "mailto:you@example.com"
+};
+/* -------------------- */
 
-    controls.addEventListener('lock', () => instructions.style.display = 'none');
-    controls.addEventListener('unlock', () => instructions.style.display = '');
+document.querySelectorAll('[data-cfg]').forEach(el => el.textContent = CONFIG[el.dataset.cfg]);
+document.title = CONFIG.name + " | Gamedev";
+document.querySelectorAll('[data-link]').forEach(a => {
+  a.href = CONFIG[a.dataset.link];
+  if (!CONFIG[a.dataset.link].startsWith('mailto')) { a.target = "_blank"; a.rel = "noopener"; }
+});
+const av = document.getElementById('avatar');
+if (CONFIG.avatar) { const i = document.createElement('img'); i.src = CONFIG.avatar; i.alt = ""; av.appendChild(i); }
+else av.textContent = CONFIG.short.charAt(0).toUpperCase();
 
-    scene.add(controls.getObject());
+/* Simple page switching on #hash */
+const pages = ['home','games','videos','contact'];
+function route() {
+  const h = location.hash.slice(1);
+  const p = pages.includes(h) ? h : 'home';
+  pages.forEach(id => document.getElementById(id).classList.toggle('on', id === p));
+  document.querySelectorAll('nav a').forEach(a => {
+    const on = a.dataset.p === p;
+    a.classList.toggle('on', on);
+    if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  window.scrollTo(0, 0);
+}
+addEventListener('hashchange', route);
+route();
 
-    // Movement
-    const move = {forward:false, backward:false, left:false, right:false};
-    const velocity = new THREE.Vector3();
-    const speed = 0.2;
-
-    document.addEventListener('keydown', e => {
-      if(e.code === 'KeyW') move.forward = true;
-      if(e.code === 'KeyS') move.backward = true;
-      if(e.code === 'KeyA') move.left = true;
-      if(e.code === 'KeyD') move.right = true;
-    });
-    document.addEventListener('keyup', e => {
-      if(e.code === 'KeyW') move.forward = false;
-      if(e.code === 'KeyS') move.backward = false;
-      if(e.code === 'KeyA') move.left = false;
-      if(e.code === 'KeyD') move.right = false;
-    });
-
-    // Shooting
-    const bullets = [];
-    document.addEventListener('click', () => {
-      const bulletGeometry = new THREE.SphereGeometry(0.1, 8, 8);
-      const bulletMaterial = new THREE.MeshBasicMaterial({color:0xff0000});
-      const bullet = new THREE.Mesh(bulletGeometry, bulletMaterial);
-      bullet.position.copy(camera.position);
-      const forward = new THREE.Vector3();
-      camera.getWorldDirection(forward);
-      bullet.userData.velocity = forward.multiplyScalar(1);
-      scene.add(bullet);
-      bullets.push(bullet);
-    });
-
-    // Animate
-    function animate() {
-      requestAnimationFrame(animate);
-
-      // Movement
-      velocity.set(0,0,0);
-      if(move.forward) velocity.z -= speed;
-      if(move.backward) velocity.z += speed;
-      if(move.left) velocity.x -= speed;
-      if(move.right) velocity.x += speed;
-
-      controls.moveRight(velocity.x);
-      controls.moveForward(velocity.z);
-
-      // Update bullets
-      for(let i=bullets.length-1; i>=0; i--){
-        const b = bullets[i];
-        b.position.add(b.userData.velocity);
-        if(b.position.length() > 100){
-          scene.remove(b);
-          bullets.splice(i,1);
-        }
-      }
-
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    // Resize
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+/* Live demo: spinning wireframe cube on a floor grid */
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const fpsEl = document.getElementById('fps');
+const W = cv.width, H = cv.height;
+const V = [];
+for (const x of [-1,1]) for (const y of [-1,1]) for (const z of [-1,1]) V.push([x,y,z]);
+const E = [];
+for (let i = 0; i < 8; i++) for (let j = i+1; j < 8; j++) {
+  const d = (V[i][0]!==V[j][0]) + (V[i][1]!==V[j][1]) + (V[i][2]!==V[j][2]);
+  if (d === 1) E.push([i,j]);
+}
+function project(p, ay, ax) {
+  let [x,y,z] = p;
+  let c = Math.cos(ay), s = Math.sin(ay);
+  [x,z] = [x*c + z*s, -x*s + z*c];
+  c = Math.cos(ax); s = Math.sin(ax);
+  [y,z] = [y*c - z*s, y*s + z*c];
+  const k = 340 / (z + 5);
+  return [W/2 + x*k, H/2 + y*k];
+}
+function line(a, b) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+function frame(t) {
+  ctx.fillStyle = '#0d0826';
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(201,184,255,.25)';
+  ctx.lineWidth = 1;
+  for (let i = -6; i <= 6; i++) {
+    line(project([i,1.6,-6],0,.35), project([i,1.6,6],0,.35));
+    line(project([-6,1.6,i],0,.35), project([6,1.6,i],0,.35));
+  }
+  const ay = t / 1400, ax = .35 + Math.sin(t / 2200) * .25;
+  const P = V.map(v => project(v, ay, ax));
+  ctx.strokeStyle = '#c6ff3d';
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+  E.forEach(([i,j]) => line(P[i], P[j]));
+}
+let n = 0, last = performance.now();
+function loop(t) {
+  if (document.getElementById('games').classList.contains('on')) {
+    frame(t);
+    n++;
+    if (t - last >= 500) { fpsEl.textContent = Math.round(n * 1000 / (t - last)) + ' fps'; n = 0; last = t; }
+  } else { n = 0; last = t; }
+  requestAnimationFrame(loop);
+}
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) { frame(900); fpsEl.textContent = 'paused'; }
+else requestAnimationFrame(loop);
+</script>
 </body>
 </html>
