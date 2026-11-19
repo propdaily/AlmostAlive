@@ -52,9 +52,8 @@ h2.title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin-bottom:32px}
 
 /* Contact */
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.contact a.card{border:3px solid var(--ink);border-radius:16px;padding:28px;background:var(--white);box-shadow:6px 6px 0 var(--ink);text-decoration:none;transition:transform .12s,box-shadow .12s}
-.contact a.card:hover{transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
-.contact a.card.hot{background:var(--lime)}
+.contact a.card{border:3px solid #fff;border-radius:16px;padding:28px;background:#000;color:#fff;text-decoration:none;transition:background .12s,color .12s}
+.contact a.card:hover{background:#fff;color:#000}
 .contact h3{font-size:1.4rem;font-weight:800;margin-bottom:6px}
 
 footer{background:#000;color:var(--white);border-top:3px solid var(--ink);padding:22px 0;font-size:.95rem}
@@ -87,7 +86,7 @@ footer{background:#000;color:var(--white);border-top:3px solid var(--ink);paddin
       <h1>I'm <span data-cfg="short">P9nds3</span>.</h1>
       <p data-cfg="bio">I'm a game developer building my own engine in C++</p>
       <div class="btns">
-        <a class="btn main" href="#games">Explore my games</a>
+        <a class="btn main" href="#games">Explore my game</a>
       </div>
     </div>
     <div class="avatar" id="avatar" aria-hidden="true"></div>
