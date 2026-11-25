@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>P9nds3 | Gamedev</title>
-<meta name="description" content="Game developer building their own engine and games. Check out my work and join my Discord.">
+<meta name="description" content="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@ main{flex:1}
 .btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
 .btn.main{background:var(--lime)}
 
-/* Home */
+
 .home{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
 .home h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:800}
 .home p{margin:24px 0 32px;max-width:46ch;font-size:1.15rem}
@@ -42,7 +42,7 @@ main{flex:1}
 
 h2.title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin-bottom:32px}
 
-/* Games */
+
 .featured{background:#000;color:#fff;border:3px solid #fff;border-radius:20px;display:grid;grid-template-columns:1fr;gap:36px;align-items:center;padding:36px}
 .featured h3{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:800;color:#fff}
 .tag{display:inline-block;background:#000;color:#fff;border:2px solid #fff;font-weight:700;font-size:.9rem;padding:3px 12px;border-radius:999px;margin-bottom:16px}
@@ -50,7 +50,7 @@ h2.title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;margin-bottom:32px}
 .featured .btn{background:#000;color:#fff;border-color:#fff;box-shadow:none}
 .featured .btn:hover{background:#fff;color:#000;transform:none}
 
-/* Contact */
+
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .contact a.card{border:3px solid #fff;border-radius:16px;padding:28px;background:#000;color:#fff;text-decoration:none;transition:background .12s,color .12s}
 .contact a.card:hover{background:#fff;color:#000}
@@ -70,65 +70,58 @@ footer{background:#000;color:var(--white);border-top:3px solid var(--ink);paddin
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#home" data-cfg="name">P9nds3</a>
+    <a class="logo" href="#home">ye</a>
     <nav aria-label="Main">
       <a href="#home" data-p="home">Home</a>
-      <a href="#games" data-p="games">Game</a>
+      <a href="#games" data-p="games">Games</a>
       <a href="#contact" data-p="contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <!-- HOME -->
+
   <section class="page" id="home"><div class="wrap home">
     <div>
-      <h1>I'm <span data-cfg="short">P9nds3</span>.</h1>
-      <p data-cfg="bio">I'm a game developer building my own engine in C++</p>
+
+      <p data-cfg="bio"></p>
       <div class="btns">
-        <a class="btn main" href="#games">Explore my game</a>
+        <a class="btn main" href="#games">Hit the road dude</a>
       </div>
     </div>
     <div class="avatar" id="avatar" aria-hidden="true"></div>
   </div></section>
 
-  <!-- GAMES -->
   <section class="page" id="games"><div class="wrap">
-    <h2 class="title">engine</h2>
     <article class="featured">
       <div>
-        <span class="tag">Zombie Experience</span>
-        <h3 data-cfg="engine">YourEngine</h3>
-        <p>A game engine built from scratch.</p>
-        <a class="btn main" href="#" data-link="github">Download The Game</a>
+        <h3 data-cfg="game"></h3>
+        <p></p>
+        <a class="btn main" href="#" data-link="github">Link to the game</a>
       </div>
     </article>
   </div></section>
 
-  <!-- CONTACT -->
+
   <section class="page" id="contact"><div class="wrap">
-    <h2 class="title">Get in touch</h2>
     <div class="contact">
-      <a class="card" href="#" data-link="email"><h3>Email</h3><p>For business or longer messages.</p></a>
       <a class="card" href="#" data-link="youtube"><h3>YouTube</h3><p>Devlogs and showcases.</p></a>
     </div>
   </div></section>
 </main>
 
 <script>
-/* ---- EDIT THESE ---- */
+
 const CONFIG = {
   name: "P9nds3",
   short: "P9nds3",
-  bio: "Hey I'm a game developer building my own unique game engine in C++. My real name is Mantas and I'm from Lithuania, I'm making first person shooter zombie survival game with a friend, I'm currently implementing graphics and player movement to the game engine.",
-  engine: "Zombie Experience",
+  bio: "Hey P9nds3 Here, Welcome to my page :)",
+  game: "Condemned 1998",
   avatar: "me.png", 
-  discord: "https://discord.gg/your-invite-code",
   github: "https://github.com/propdaily",
   youtube: "https://youtube.com/@CreepifyHD",
-  email: "mailto:mantassapranauskas441@gmail.com"
 };
-/* -------------------- */
+
 
 document.querySelectorAll('[data-cfg]').forEach(el => el.textContent = CONFIG[el.dataset.cfg]);
 document.title = CONFIG.name + " | Gamedev";
@@ -140,7 +133,6 @@ const av = document.getElementById('avatar');
 if (CONFIG.avatar) { const i = document.createElement('img'); i.src = CONFIG.avatar; i.alt = ""; av.appendChild(i); }
 else av.textContent = CONFIG.short.charAt(0).toUpperCase();
 
-/* Simple page switching on #hash */
 const pages = ['home','games','contact'];
 function route() {
   const h = location.hash.slice(1);
